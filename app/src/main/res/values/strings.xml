@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Picker Timer</string>
+    <string name="title_pause">Pause</string>
+    <string name="title_resumed">Resumed</string>
+    <string name="title_stop">Stop</string>
+    <string name="title_start">Start</string>
+
+
+    <string name="subMenuTitle">Pause 2</string>
+    <string name="itemName">Pause 2</string>
+
+
+    <integer name="card_flip_duration_full">600</integer>
+    <integer name="card_flip_duration_half">300</integer>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

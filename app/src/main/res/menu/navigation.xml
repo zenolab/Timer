@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_pause"
+        android:icon="@drawable/ic_pause_black_24dp"
+        android:title="@string/title_pause" />
+
+    <item
+        android:id="@+id/navigation_invalidate"
+        android:icon="@drawable/ic_stop_black_24dp"
+        android:title="@string/title_stop" />
+
+    <item
+        android:id="@+id/navigation_start_resume"
+        android:icon="@drawable/ic_play_arrow_black_24dp"
+        android:title="@string/title_start"
+         />
+
+</menu>
