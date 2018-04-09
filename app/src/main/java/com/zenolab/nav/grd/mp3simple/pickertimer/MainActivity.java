@@ -23,6 +23,9 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.zenolab.nav.grd.mp3simple.pickertimer.event_bus.Events;
+import com.zenolab.nav.grd.mp3simple.pickertimer.event_bus.GlobalBus;
+
 import java.math.BigDecimal;
 
 
@@ -233,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // GlobalBus.getBus().register(this);
 
     }
 
@@ -266,6 +270,19 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
+
+    //--------------------------otto-------------
+
+    // public void sendMessageToFragment(View view) {
+    public void sendMessageToFragment(String etMessage) {
+        // EditText etMessage = (EditText) findViewById(R.id.activityData);
+        // String etMessage = "Робототехника приветсвует всех!";
+        Events.ActivityToFragmentMessage activityToFragmentMessageEvent =
+                new Events.ActivityToFragmentMessage(String.valueOf(etMessage));
+        GlobalBus.getBus().post(activityToFragmentMessageEvent);
+    }
+
+    //--------------------otto---------------------
 
 
     private void flipCardDisplayTime() {
@@ -341,9 +358,13 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG, " ----ATTEMPT SET TEXT to Fragment");
         if (displayTimer != null) {
-            displayTimer.setText("seconds remaining: " + millisUntilFinished);
-            displayTimer.setText(""+millisUntilFinished);
-            displayTimer.setText(""+remainTimeFormat(millisUntilFinished));
+
+           // displayTimer.setText("seconds remaining: " + millisUntilFinished);
+           // displayTimer.setText(""+millisUntilFinished);
+           // displayTimer.setText(""+remainTimeFormat(millisUntilFinished));
+
+            //event bus otto
+            sendMessageToFragment(""+remainTimeFormat(millisUntilFinished));
 
         } else {
             displayTimer.setText("Don't set value");
