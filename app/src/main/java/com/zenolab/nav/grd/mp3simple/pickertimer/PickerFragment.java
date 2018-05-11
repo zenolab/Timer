@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.value09;
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueHour;
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueMin;
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueSec;
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.displayTimer; //data transfer
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.value09;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueHour;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueMin;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueSec;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.displayTimer; //data transfer
 
 
 public class PickerFragment extends Fragment {

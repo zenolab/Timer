@@ -20,20 +20,23 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.zenolab.nav.grd.mp3simple.pickertimer.event_bus.Events;
 import com.zenolab.nav.grd.mp3simple.pickertimer.event_bus.GlobalBus;
+import com.zenolab.nav.grd.mp3simple.pickertimer.rxbus.RxBusActivity;
+import com.zenolab.nav.grd.mp3simple.pickertimer.rxbus_to_fragment.RxEvents;
 
 import java.math.BigDecimal;
 
 
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.value09;
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueHour;
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueMin;
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueSec;
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.displayTimer;//transfer to fragment
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.value09;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueHour;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueMin;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueSec;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.displayTimer;//transfer to fragment
 
 
 
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.navigation_invalidate:
 
+                  //  /*
                     isCanceled = true;
                     value09 = 0;
                     valueSec = 0;
@@ -108,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
                     timer=null;
                     stopSound();
                     flipCardSetTime();
+                  //  */
+
+                   // ((MyApplication) getApplication()).sendAutoEvent();
+                   // startActivity(new Intent(MainActivity.this, RxBusActivity.class));
+
+
 
                     return true;
                 case R.id.navigation_start_resume:
@@ -139,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
                                 } else {
                                     updateViewFrag(millisUntilFinished/countDownInterval);
                                     //Put count down timer remaining time in a variable
+
+
+
                                     timeRemaining = millisUntilFinished;
                                     mySetColor();
                                     Log.i(TAG, " -REMAIN--timeRemaining ----------" + timeRemaining);
@@ -154,6 +167,11 @@ public class MainActivity extends AppCompatActivity {
                         }.start();
 
                         flipCardDisplayTime();
+
+                    //-----------------RXBusFragment
+                    ((MyApplication)getApplication()).rxBusController()
+                            .sendSetString(new RxEvents.Message("You clicked the email button!"));
+
 
                     return true;
             }
@@ -231,6 +249,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     } // End-----  onCreate
+
+    //===================RX===================
+    //https://blog.mindorks.com/implementing-eventbus-with-rxjava-rxbus-e6c940a94bd8
+    //onClick from xml
+    public void startRxBusActivity(View view) {
+        ((MyApplication) getApplication()).sendAutoEvent();
+        startActivity(new Intent(MainActivity.this, RxBusActivity.class));
+    }
+    //========================================
 
 
     @Override
@@ -320,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void done(){
         textViewBottom.setText("Done!");
-        displayTimer.setText("seconds remaining: " + App.myRemainTime);
+        displayTimer.setText("seconds remaining: " + MyApplication.myRemainTime);
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(pattern, -1);
         mp = MediaPlayer.create(context, R.raw.timer_sound1);
@@ -363,8 +390,15 @@ public class MainActivity extends AppCompatActivity {
            // displayTimer.setText(""+millisUntilFinished);
            // displayTimer.setText(""+remainTimeFormat(millisUntilFinished));
 
-            //event bus otto
-            sendMessageToFragment(""+remainTimeFormat(millisUntilFinished));
+            //---------event bus otto---------------
+            //sendMessageToFragment(""+remainTimeFormat(millisUntilFinished));
+
+            //rxJava
+            //-----------------RXBusFragment
+            ((MyApplication)getApplication()).rxBusController()
+                    //.sendSetString(new RxEvents.Message("You clicked the email button!"));
+                    .sendSetString(new RxEvents.Message(""+remainTimeFormat(millisUntilFinished)));
+
 
         } else {
             displayTimer.setText("Don't set value");
