@@ -1,4 +1,4 @@
 # Timer
-with picker
+With picker usages RxJava lib
 
-RxJava 
+
