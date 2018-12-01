@@ -31,7 +31,6 @@ import com.zenolab.nav.grd.mp3simple.pickertimer.rxbus_to_fragment.RxEvents;
 
 import java.math.BigDecimal;
 
-
 import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.value09;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueHour;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueMin;
@@ -39,8 +38,6 @@ import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.valueSec;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.MyApplication.displayTimer;//transfer to fragment
 
 
-
-//condition - состояниие
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyApp";
@@ -76,14 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-
-
-
-
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
 
              isPaused = false;
              isCanceled = false;
@@ -117,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
                    // ((MyApplication) getApplication()).sendAutoEvent();
                    // startActivity(new Intent(MainActivity.this, RxBusActivity.class));
 
-
-
                     return true;
                 case R.id.navigation_start_resume:
                     textViewBottom.setText(R.string.title_resumed);
@@ -149,9 +138,6 @@ public class MainActivity extends AppCompatActivity {
                                 } else {
                                     updateViewFrag(millisUntilFinished/countDownInterval);
                                     //Put count down timer remaining time in a variable
-
-
-
                                     timeRemaining = millisUntilFinished;
                                     mySetColor();
                                     Log.i(TAG, " -REMAIN--timeRemaining ----------" + timeRemaining);
@@ -209,50 +195,9 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.frgmCont, new PickerFragment())
                     .commit();
         }
-
-        //-------------------not work in android 8 api26 needns implements Notification Cannel-----------------------
-        /*
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,
-                0, notificationIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Resources res = this.getResources();
-
-        // до версии Android 8.0 API 26
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-
-        builder.setContentIntent(contentIntent)
-                // обязательные настройки
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                //.setContentTitle(res.getString(R.string.notifytitle)) // Заголовок уведомления
-                .setContentTitle("Напоминание")
-                //.setContentText(res.getString(R.string.notifytext))
-                .setContentText("Пора покормить кота") // Текст уведомления
-                // необязательные настройки
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_home_black_24dp)) // большая
-                // картинка
-                //.setTicker(res.getString(R.string.warning)) // текст в строке состояния
-                .setTicker("Последнее китайское предупреждение!")
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true); // автоматически закрыть уведомление после нажатия
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // Альтернативный вариант
-        // NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(NOTIFY_ID, builder.build());
-        */
-//-----------------------------
-
-//-----------------------------
-
-
     } // End-----  onCreate
 
     //===================RX===================
-    //https://blog.mindorks.com/implementing-eventbus-with-rxjava-rxbus-e6c940a94bd8
-    //onClick from xml
     public void startRxBusActivity(View view) {
         ((MyApplication) getApplication()).sendAutoEvent();
         startActivity(new Intent(MainActivity.this, RxBusActivity.class));
@@ -263,15 +208,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // GlobalBus.getBus().register(this);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
     @Override
@@ -298,20 +239,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+ 
     //--------------------------otto-------------
-
-    // public void sendMessageToFragment(View view) {
     public void sendMessageToFragment(String etMessage) {
-        // EditText etMessage = (EditText) findViewById(R.id.activityData);
-        // String etMessage = "Робототехника приветсвует всех!";
+       
         Events.ActivityToFragmentMessage activityToFragmentMessageEvent =
                 new Events.ActivityToFragmentMessage(String.valueOf(etMessage));
         GlobalBus.getBus().post(activityToFragmentMessageEvent);
     }
 
-    //--------------------otto---------------------
-
-
+    //-----------------------------------------
     private void flipCardDisplayTime() {
         Log.i(TAG, "flipCard()----------ShowTime = "+flipOn);
 
@@ -389,7 +326,6 @@ public class MainActivity extends AppCompatActivity {
            // displayTimer.setText("seconds remaining: " + millisUntilFinished);
            // displayTimer.setText(""+millisUntilFinished);
            // displayTimer.setText(""+remainTimeFormat(millisUntilFinished));
-
             //---------event bus otto---------------
             //sendMessageToFragment(""+remainTimeFormat(millisUntilFinished));
 
