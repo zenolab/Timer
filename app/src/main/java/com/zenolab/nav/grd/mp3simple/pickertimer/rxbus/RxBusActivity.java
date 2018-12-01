@@ -60,7 +60,7 @@ public class RxBusActivity extends AppCompatActivity {
                     }
                 }));
 
-        //onClick() xml (MainActiivty)
+        //onClick() xml
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
