@@ -10,7 +10,7 @@ public class RxBusController {
 
     private PublishSubject<Object> subjectBus = PublishSubject.create();
 
-    //от какого класса произошел объект CUSTOM!
+    
     public static RxBusController instanceOf(){
         if(instance == null){
             instance = new RxBusController();
