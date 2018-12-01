@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 
-
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.value09;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueHour;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueMin;
@@ -33,8 +32,6 @@ import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueSec;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.displayTimer;//transfer to fragment
 
 
-
-//condition - состояниие
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyApp";
@@ -62,23 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
     long countDownInterval = 1000; //1 second
     long millisInFuture;
-
-
     long[] pattern = { 500, 300, 400, 200,500, 300, 400, 200,500, 300, 400, 200,500, 300, 400, 200 };
-
-
+    
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-
-
-
-
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-
              isPaused = false;
              isCanceled = false;
 
@@ -110,10 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_start_resume:
                     textViewBottom.setText(R.string.title_resumed);
                     textViewBottom.setText("Countdown");
-
                     displayTimer.setTextColor(Color.parseColor("#8b8b8b"));
-
-
                     if(timeRemaining==0 ){
 
                         millisInFuture  = getTimePickerValue();
@@ -123,9 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     }else{
                          millisInFuture = timeRemaining;
                         flipOn=false;
-
                     }
-
                     timer = new CountDownTimer(millisInFuture, countDownInterval) {
                             public void onTick(long millisUntilFinished) {
 
@@ -167,15 +148,12 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
         textView = (TextView) findViewById(R.id.textViewHeader);
         displayTimer = (TextView) findViewById(R.id.countDown_timer_bottom);
         textViewBottom = (TextView) findViewById(R.id.countDown_timer_bottom);
 
-
         displayTimer.setTextColor(Color.parseColor("#FFFFFF"));
         textViewBottom.setTextColor(Color.parseColor("#FFFFFF"));
-
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -188,8 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.frgmCont, new PickerFragment())
                     .commit();
         }
-
-        //-------------------not work in android 8 api26 needns implements Notification Cannel-----------------------
+        //-------------------old version api -----------------------
         /*
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
@@ -223,36 +200,27 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(NOTIFY_ID, builder.build());
         */
 //-----------------------------
-
-//-----------------------------
-
-
     } // End-----  onCreate
 
 
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
     }
 
     @Override
@@ -264,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
 
@@ -385,11 +352,8 @@ public class MainActivity extends AppCompatActivity {
         int NOTIFICATION_ID = 234;
 
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-
+        //Android 8+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-
-
             String CHANNEL_ID = "my_channel_01";
             CharSequence name = "my_channel";
             String Description = "This is my channel";
@@ -411,7 +375,6 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.mipmap.ic_launcher_foreground)
                 .setContentTitle("Timer")
                 .setContentText("Time Over !");
-
 
         Intent resultIntent = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
