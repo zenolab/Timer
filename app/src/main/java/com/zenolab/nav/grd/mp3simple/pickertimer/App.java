@@ -10,10 +10,9 @@ import android.widget.TextView;
 public class App extends Application {
 
     static TextView displayTimer;
-    static long myRemainTime;
+    static long remainTime;
 
-    //create enum
-    static int value09 = 0;
+    static int valueDec = 0;
     static int valueSec = 0;
     static int valueMin = 0;
     static int valueHour = 0;

@@ -5,7 +5,6 @@
     android:background="@drawable/rectangle3"
     tools:context="com.zenolab.nav.grd.mp3simple.pickertimer.TimerFragment">
 
-
     <TextView
         android:id="@+id/txt_timer"
         android:layout_width="wrap_content"

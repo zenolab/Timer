@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.value09;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueDec;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueHour;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueMin;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueSec;
@@ -21,16 +21,18 @@ import static com.zenolab.nav.grd.mp3simple.pickertimer.App.displayTimer; //data
 
 public class PickerFragment extends Fragment {
 
-
     private static final String TAG = "PickerFragment";
 
-    private TextView textField, textField2, textField3, textField4;
-    private NumberPicker numberPicker,numberPicker2,numberPicker3,numberPicker4;
+    private TextView textFieldHour, textFieldMin, textFieldSec, textFieldDec;
+    private NumberPicker numberPickerHour;
+    private NumberPicker numberPickerMin;
+    private NumberPicker numberPickerSec;
+    private NumberPicker numberPickerDec;
 
-    int mills = 10;
-    int mills2 = 15;
-    int mills3 = 20;
-    int mills4 = 30;
+    int millsDec = 10;
+    int millsSec = 15;
+    int millsMin = 20;
+    int millsHour = 30;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,95 +49,90 @@ public class PickerFragment extends Fragment {
 
         displayTimer = (TextView) view.findViewById(R.id.countDown_Timer_Frag);
 
-        textField = (TextView) view.findViewById(R.id.textViewHeader);
-        textField2 = (TextView) view.findViewById(R.id.textView2);
-        textField3 = (TextView) view.findViewById(R.id.textView3);
-        textField4 = (TextView) view.findViewById(R.id.textView4);
+        textFieldHour = (TextView) view.findViewById(R.id.textViewHeader);
+        textFieldMin = (TextView) view.findViewById(R.id.textView2);
+        textFieldSec = (TextView) view.findViewById(R.id.textView3);
+        textFieldDec = (TextView) view.findViewById(R.id.textView4);
 
-        numberPicker = view.findViewById(R.id.numberPicker);
-        numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(23);
+        numberPickerHour = view.findViewById(R.id.numberPicker);
+        numberPickerHour.setMinValue(0);
+        numberPickerHour.setMaxValue(23);
 
-        numberPicker2 = view.findViewById(R.id.numberPicker2);
-        numberPicker2.setMinValue(0);
-        numberPicker2.setMaxValue(59);
+        numberPickerMin = view.findViewById(R.id.numberPicker2);
+        numberPickerMin.setMinValue(0);
+        numberPickerMin.setMaxValue(59);
 
-        numberPicker3 = view.findViewById(R.id.numberPicker3);
-        numberPicker3.setMinValue(0);
-        numberPicker3.setMaxValue(5);
+        numberPickerSec = view.findViewById(R.id.numberPicker3);
+        numberPickerSec.setMinValue(0);
+        numberPickerSec.setMaxValue(5);
 
-        numberPicker4 = view.findViewById(R.id.numberPicker4);
-        numberPicker4.setMinValue(0);
-        numberPicker4.setMaxValue(9);
+        numberPickerDec = view.findViewById(R.id.numberPicker4);
+        numberPickerDec.setMinValue(0);
+        numberPickerDec.setMaxValue(9);
 
-        numberPicker.setOnValueChangedListener(onValueChangeListener);
-        numberPicker2.setOnValueChangedListener(onValueChangeListener2);
-        numberPicker3.setOnValueChangedListener(onValueChangeListener3);
-        numberPicker4.setOnValueChangedListener(onValueChangeListener4);
+        numberPickerHour.setOnValueChangedListener(onValueChangeListenerHour);
+        numberPickerMin.setOnValueChangedListener(onValueChangeListenerMin);
+        numberPickerSec.setOnValueChangedListener(onValueChangeListenerSec);
+        numberPickerDec.setOnValueChangedListener(onValueChangeListenerDec);
 
         return view;
-
     }
 
-    NumberPicker.OnValueChangeListener onValueChangeListener =
-            new 	NumberPicker.OnValueChangeListener(){
+    NumberPicker.OnValueChangeListener onValueChangeListenerHour =
+            new NumberPicker.OnValueChangeListener() {
                 @Override
                 public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                     valueHour = numberPicker.getValue();
 
-                    Log.i(TAG, "PickerHour"+valueHour);
-                    textField.setText(""+valueHour);
+
+                    Log.i(TAG, "PickerHour" + valueHour);
+                    textFieldHour.setText("" + valueHour);
 
                     Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(mills4);
+                    vibrator.vibrate(millsHour);
 
                 }
 
             };
 
-    NumberPicker.OnValueChangeListener onValueChangeListener2 =
-            new 	NumberPicker.OnValueChangeListener(){
+    NumberPicker.OnValueChangeListener onValueChangeListenerMin =
+            new NumberPicker.OnValueChangeListener() {
                 @Override
                 public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                     valueMin = numberPicker.getValue();
 
-                    Log.i(TAG, "PickerMin"+valueMin);
-                    textField2.setText(""+valueMin);
+                    Log.i(TAG, "PickerMin" + valueMin);
+                    textFieldMin.setText("" + valueMin);
 
                     Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(mills3);
+                    vibrator.vibrate(millsMin);
                 }
             };
-    NumberPicker.OnValueChangeListener onValueChangeListener3 =
-            new 	NumberPicker.OnValueChangeListener(){
+    NumberPicker.OnValueChangeListener onValueChangeListenerSec =
+            new NumberPicker.OnValueChangeListener() {
                 @Override
                 public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                     valueSec = numberPicker.getValue();
 
-                    Log.i(TAG, "PickerSec05"+valueSec);
-                    textField3.setText(""+valueSec);
+                    Log.i(TAG, "PickerSec05" + valueSec);
+                    textFieldSec.setText("" + valueSec);
 
                     Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(mills2);
+                    vibrator.vibrate(millsSec);
                 }
             };
-    NumberPicker.OnValueChangeListener onValueChangeListener4 =
-            new 	NumberPicker.OnValueChangeListener(){
+    NumberPicker.OnValueChangeListener onValueChangeListenerDec =
+            new NumberPicker.OnValueChangeListener() {
                 @Override
                 public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                    value09 = numberPicker.getValue();
+                    valueDec = numberPicker.getValue();
 
-                    Log.i(TAG, "PickerSec09"+value09);
-                    textField4.setText(""+value09);
+                    Log.i(TAG, "Picker0_9" + valueDec);
+                    textFieldDec.setText("" + valueDec);
 
                     Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-                    vibrator.vibrate(mills);
+                    vibrator.vibrate(millsDec);
                 }
             };
-
-
-
-
-
 
 }

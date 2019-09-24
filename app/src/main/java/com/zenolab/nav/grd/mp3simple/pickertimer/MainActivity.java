@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 
-import static com.zenolab.nav.grd.mp3simple.pickertimer.App.value09;
+import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueDec;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueHour;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueMin;
 import static com.zenolab.nav.grd.mp3simple.pickertimer.App.valueSec;
@@ -34,19 +34,13 @@ import static com.zenolab.nav.grd.mp3simple.pickertimer.App.displayTimer;//trans
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MyApp";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int NOTIFY_ID = 101;
     private static final String CHANNEL_ID = "my_channel_01";
 
     private TextView textView;
     private TextView textViewBottom;
-
-    CountDownTimer timer;
-    Context context = this;
-    MediaPlayer mp;
-
-    TimerFragment myFragment;
 
     private boolean flipOn = false;
 
@@ -56,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean isCanceled = false;
     //Declare a variable to hold CountDownTimer remaining time
     private long timeRemaining = 0;
+
+    CountDownTimer timer;
+    Context context = this;
+    MediaPlayer mp;
+
+    TimerFragment timerFragment;
 
     long countDownInterval = 1000; //1 second
     long millisInFuture;
@@ -67,20 +67,14 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
              isPaused = false;
              isCanceled = false;
-
             switch (item.getItemId()) {
                 case R.id.navigation_pause:
-
                     textViewBottom.setText(R.string.title_pause);
-
                     isPaused = true;
-                    Log.i(TAG, "pause ----------isPAUSE = "+isPaused);
                     return true;
-
                 case R.id.navigation_invalidate:
-
                     isCanceled = true;
-                    value09 = 0;
+                    valueDec = 0;
                     valueSec = 0;
                     valueMin = 0;
                     valueHour =0;
@@ -91,27 +85,22 @@ public class MainActivity extends AppCompatActivity {
                     timer=null;
                     stopSound();
                     flipCardSetTime();
-
                     return true;
                 case R.id.navigation_start_resume:
                     textViewBottom.setText(R.string.title_resumed);
                     textViewBottom.setText("Countdown");
                     displayTimer.setTextColor(Color.parseColor("#8b8b8b"));
                     if(timeRemaining==0 ){
-
                         millisInFuture  = getTimePickerValue();
                         textView.setText("Set Timer "+remainTimeFormat(millisInFuture/1000));
                                 flipOn=true;
-
                     }else{
                          millisInFuture = timeRemaining;
                         flipOn=false;
                     }
                     timer = new CountDownTimer(millisInFuture, countDownInterval) {
                             public void onTick(long millisUntilFinished) {
-
                                 if (isPaused || isCanceled) {
-                                    Log.i(TAG, "START ----------isPAUSE = " + isPaused);
                                     cancel();
                                     stopSound();
                                 } else {
@@ -119,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                                     //Put count down timer remaining time in a variable
                                     timeRemaining = millisUntilFinished;
                                     mySetColor();
-                                    Log.i(TAG, " -REMAIN--timeRemaining ----------" + timeRemaining);
+                                    Log.i(TAG, "Time remaining " + timeRemaining);
                                 }
                             }
 
@@ -130,12 +119,9 @@ public class MainActivity extends AppCompatActivity {
                                 textView.setText("Set Timer "+remainTimeFormat(getTimePickerValue()/countDownInterval));
                             }
                         }.start();
-
                         flipCardDisplayTime();
-
                     return true;
             }
-
             return false;
         }
     };
@@ -166,41 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.frgmCont, new PickerFragment())
                     .commit();
         }
-        //-------------------old version api -----------------------
-        /*
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,
-                0, notificationIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Resources res = this.getResources();
-
-        // до версии Android 8.0 API 26
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-
-        builder.setContentIntent(contentIntent)
-                // обязательные настройки
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                //.setContentTitle(res.getString(R.string.notifytitle)) // Заголовок уведомления
-                .setContentTitle("Напоминание")
-                //.setContentText(res.getString(R.string.notifytext))
-                .setContentText("Пора покормить кота") // Текст уведомления
-                // необязательные настройки
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_home_black_24dp)) // большая
-                // картинка
-                //.setTicker(res.getString(R.string.warning)) // текст в строке состояния
-                .setTicker("Последнее китайское предупреждение!")
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true); // автоматически закрыть уведомление после нажатия
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // Альтернативный вариант
-        // NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(NOTIFY_ID, builder.build());
-        */
-//-----------------------------
-    } // End-----  onCreate
+    }
 
 
     @Override
@@ -226,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-
     }
 
     @Override
@@ -251,8 +202,7 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
     }
     private void flipCardSetTime() {
-        Log.i(TAG, "flipCard()----------SetTime = "+flipOn);
-
+        Log.i(TAG, "SetTime = "+flipOn);
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(
@@ -266,19 +216,17 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-
-
     private void done(){
         textViewBottom.setText("Done!");
-        displayTimer.setText("seconds remaining: " + App.myRemainTime);
+        displayTimer.setText("Seconds remaining: " + App.remainTime);
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(pattern, -1);
-        mp = MediaPlayer.create(context, R.raw.timer_sound1);
+        mp = MediaPlayer.create(context, R.raw.timer_sound_1);
         try {
             if (mp.isPlaying()) {
                 mp.stop();
                 mp.release();
-                mp = MediaPlayer.create(context, R.raw.timer_sound1);
+                mp = MediaPlayer.create(context, R.raw.timer_sound_1);
             } mp.start();
         } catch(Exception e) { e.printStackTrace(); }
     }
@@ -294,24 +242,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void addFragment(Bundle savedInstanceState){
         if (savedInstanceState == null) {
-            myFragment = new TimerFragment();
+            timerFragment = new TimerFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.frgmCont, myFragment);
-            ft.hide(myFragment);
+            ft.add(R.id.frgmCont, timerFragment);
+            ft.hide(timerFragment);
             ft.commit();
-
         }
-
     }
 
     private void updateViewFrag(long millisUntilFinished){
-
-        Log.i(TAG, " ----ATTEMPT SET TEXT to Fragment");
         if (displayTimer != null) {
             displayTimer.setText("seconds remaining: " + millisUntilFinished);
             displayTimer.setText(""+millisUntilFinished);
             displayTimer.setText(""+remainTimeFormat(millisUntilFinished));
-
         } else {
             displayTimer.setText("Don't set value");
         }
@@ -323,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private long getTimePickerValue(){
-        return (((valueSec * 10) + value09) * 1000) + (valueMin * 60_000)+(valueHour*3_600_000);
+        return (((valueSec * 10) + valueDec) * 1000) + (valueMin * 60_000) + (valueHour * 3_600_000);
     }
 
     public static int[] splitToComponentTimes(BigDecimal biggy)
@@ -340,15 +283,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
    private String remainTimeFormat(long millisUntilFinished){
-        int[] myArr =  splitToComponentTimes(BigDecimal.valueOf(millisUntilFinished));
-        int hours = myArr[0];
-        int minutes = myArr[1];
-        int seconds = myArr[2];
+        int[] timeArr =  splitToComponentTimes(BigDecimal.valueOf(millisUntilFinished));
+        int hours = timeArr[0];
+        int minutes = timeArr[1];
+        int seconds = timeArr[2];
         return  String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     private void showNotif(){
-
         int NOTIFICATION_ID = 234;
 
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -359,16 +301,13 @@ public class MainActivity extends AppCompatActivity {
             String Description = "This is my channel";
             int importance = NotificationManager.IMPORTANCE_HIGH;
 
-            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
-            mChannel.setDescription(Description);
-            mChannel.enableLights(true);
-            mChannel.setLightColor(Color.RED);
-           // mChannel.setSound(null,null);
-           // mChannel.enableVibration(true);
-           // mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            mChannel.setShowBadge(false);
+            NotificationChannel сhannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            сhannel.setDescription(Description);
+            сhannel.enableLights(true);
+            сhannel.setLightColor(Color.RED);
+            сhannel.setShowBadge(false);
 
-            notificationManager.createNotificationChannel(mChannel);
+            notificationManager.createNotificationChannel(сhannel);
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -380,12 +319,10 @@ public class MainActivity extends AppCompatActivity {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
+
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
         builder.setContentIntent(resultPendingIntent);
-
         notificationManager.notify(NOTIFICATION_ID, builder.build());
-
     }
 
 }
